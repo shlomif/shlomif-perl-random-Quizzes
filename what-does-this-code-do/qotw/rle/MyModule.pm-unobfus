@@ -1,0 +1,44 @@
+use strict;
+use warnings;
+
+sub m2
+{
+    my $mylist = shift;
+
+    my $get_item = sub {
+        my $pair = shift;
+        return +(ref($pair) eq "ARRAY") ? $pair->[1] : $pair;
+    };
+
+    my $get_count = sub {
+        my $pair = shift;
+        return +(ref($pair) eq "ARRAY") ? $pair->[0] : 1;
+    };
+    
+    my $helper;
+
+    $helper = sub {
+        my ($myrest_idx, $item, $mycount) = @_;
+
+        if (($myrest_idx == @$mylist) && ($mycount == 0))
+        {
+            return ();
+        }
+        elsif ($mycount == 0)
+        {
+            return $helper->($myrest_idx+1, 
+                $get_item->($mylist->[$myrest_idx]),
+                $get_count->($mylist->[$myrest_idx])
+            );
+        }
+        else
+        {
+            return ($item, $helper->($myrest_idx, $item, $mycount-1));
+        }
+    };
+
+    return [ $helper->(0, 0, 0) ];
+}
+
+1;
+
