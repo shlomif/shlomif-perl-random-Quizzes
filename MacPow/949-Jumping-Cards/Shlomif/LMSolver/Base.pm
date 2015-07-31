@@ -16,7 +16,7 @@ no warnings qw(recursion);
 
 use vars qw(%cell_dirs);
 
-%cell_dirs = 
+%cell_dirs =
     (
         'N' => [0,-1],
         'NW' => [-1,-1],
@@ -38,7 +38,7 @@ sub new
 
     $self->initialize(@_);
 
-    return $self;    
+    return $self;
 }
 
 sub initialize
@@ -55,7 +55,7 @@ sub die_on_abstract_function
 {
     my ($package, $filename, $line, $subroutine, $hasargs,
         $wantarray, $evaltext, $is_require, $hints, $bitmask) = caller(1);
-    die ("The abstract function $subroutine() was " . 
+    die ("The abstract function $subroutine() was " .
         "called, while it needs to be overrided by the derived class.\n");
 }
 
@@ -71,14 +71,14 @@ sub pack_state
     return &die_on_abstract_function();
 }
 
-# A function that accepts an atom that represents a state 
+# A function that accepts an atom that represents a state
 # and returns an array ref that represents it.
 sub unpack_state
 {
     return &die_on_abstract_function();
 }
 
-# Accept an atom that represents a state and output a 
+# Accept an atom that represents a state and output a
 # user-readable string that describes it.
 sub display_state
 {
@@ -98,7 +98,7 @@ sub check_if_final_state
 }
 
 # This function enumerates the moves accessible to the state.
-# If it returns a move, it still does not mean that this move is a valid 
+# If it returns a move, it still does not mean that this move is a valid
 # one. I.e: it is possible that it is illegal to perform it.
 sub enumerate_moves
 {
@@ -157,7 +157,7 @@ sub solve_brfs_or_dfs
         {
             print ((" " x $depth) . join(",", @$coords) . " M=" . $self->render_move($state_collection->{$state}->{'m'}) ."\n");
         }
-        
+
         if ($self->check_if_unsolveable($coords))
         {
             next;
@@ -167,7 +167,7 @@ sub solve_brfs_or_dfs
         {
             return ("solved", $state);
         }
-        
+
         @moves = $self->enumerate_moves($coords);
 
         foreach my $m (@moves)
@@ -178,14 +178,14 @@ sub solve_brfs_or_dfs
             {
                 next;
             }
-            
+
             $new_state = $self->pack_state($new_coords);
             if (! exists($state_collection->{$new_state}))
             {
-                $state_collection->{$new_state} = 
+                $state_collection->{$new_state} =
                     {
-                        'p' => $state, 
-                        'm' => $m, 
+                        'p' => $state,
+                        'm' => $m,
                         'd' => ($depth+1)
                     };
                 push @queue, $new_state;
@@ -202,11 +202,11 @@ sub solve_hard_dfs
     my $self = shift;
     my $state_collection = $self->{'state_collection'};
     my $initial_state = shift;
-    
+
     my $state_dfs;
-    
+
     $state_dfs = sub {
-        
+
         my $state = shift;
         my $depth = shift || 0;
 
@@ -233,7 +233,7 @@ sub solve_hard_dfs
             {
                 next;
             }
-            
+
             my $new_state = $self->pack_state($new_coords);
             if (! exists($state_collection->{$new_state}))
             {
@@ -242,7 +242,7 @@ sub solve_hard_dfs
                 if ($ret[0] eq "solved")
                 {
                     return @ret;
-                }                
+                }
             }
         }
         return ("unsolved",undef);
@@ -263,7 +263,7 @@ sub run_length_encoding
     {
         if ($m eq $prev_m)
         {
-            $count++;            
+            $count++;
         }
         else
         {
@@ -274,7 +274,7 @@ sub run_length_encoding
     }
     push @ret, [$prev_m, $count];
 
-    return @ret;    
+    return @ret;
 }
 
 my %scan_functions =
@@ -297,13 +297,13 @@ my %scan_functions =
 sub solve_state
 {
     my $self = shift;
-    
+
     my $initial_coords = shift;
-    
+
     my $state = $self->pack_state($initial_coords);
     $self->{'state_collection'}->{$state} = {'p' => undef, 'd' => 0};
 
-    return 
+    return
         $scan_functions{$self->{'cmd_line'}->{'scan'}}->(
             $self,
             $state
@@ -313,7 +313,7 @@ sub solve_state
 sub solve_file
 {
     my $self = shift;
-    
+
     my $filename = shift;
 
     my $initial_coords = $self->input_board($filename);
@@ -332,13 +332,13 @@ sub display_solution
     my $output_states = $self->{'cmd_line'}->{'output_states'};
     my $to_rle = $self->{'cmd_line'}->{'to_rle'};
 
-    my $echo_state = 
+    my $echo_state =
         sub {
             my $state = shift;
-            return $output_states ? 
+            return $output_states ?
                 ($self->display_state($state) . ": Move = ") :
                 "";
-        };    
+        };
 
     print $ret[0], "\n";
 
@@ -365,7 +365,7 @@ sub display_solution
 
             $sum = 0;
             foreach $m (@moves_rle)
-            {            
+            {
                 print $echo_state->($states[$sum]) . $self->render_move($m->[0]) . " * " . $m->[1] . "\n";
                 $sum += $m->[1];
             }
@@ -397,7 +397,7 @@ sub main
     my $run_time_states_display = 0;
 
     my $p = Getopt::Long::Parser->new();
-    if (! $p->getoptions('rle!' => \$to_rle, 
+    if (! $p->getoptions('rle!' => \$to_rle,
         'output-states!' => \$output_states,
         'method=s' => \$scan,
         'rtd!' => \$run_time_states_display,

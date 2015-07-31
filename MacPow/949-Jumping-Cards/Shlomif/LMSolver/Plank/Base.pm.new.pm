@@ -19,10 +19,10 @@ sub input_board
     my $spec =
     {
         'dims' => { 'type' => "xy(integer)", 'required' => 1, },
-        'planks' => { 'type' => "array(start_end(xy(integer)))", 
+        'planks' => { 'type' => "array(start_end(xy(integer)))",
                       'required' => 1,
                     },
-        'layout' => { 'type' => "layout", 'required' => 1,},        
+        'layout' => { 'type' => "layout", 'required' => 1,},
     };
 
     my $input_obj = Shlomif::LMSolver::Input->new();
@@ -58,13 +58,13 @@ sub input_board
             }
             $x++;
         }
-        push @board, $l;        
+        push @board, $l;
     }
     if (!defined($goal_x))
     {
         die "The Goal was not defined in the layout.";
     }
-    
+
     my $planks_in = $input_fields->{'planks'}->{'value'};
 
     my @planks;
@@ -84,11 +84,11 @@ sub input_board
             {
                 die "Plank cannot be placed at point ($end_x,$end_y)!";
             }
-        };        
+        };
 
         my $plank_str = "Plank ($start_x,$start_y) ==> ($end_x,$end_y)";
 
-        if (($start_x >= $width) || ($end_x >= $width) || 
+        if (($start_x >= $width) || ($end_x >= $width) ||
             ($start_y >= $height) || ($end_y >= $height))
         {
             die "$plank_str is out of the boundaries of the board";
@@ -135,7 +135,7 @@ sub input_board
             die "$plank_str is not aligned horizontally or vertically.";
         }
     };
-    
+
     foreach my $p (@$planks_in)
     {
         push @planks, $get_plank->($p);
@@ -147,7 +147,7 @@ sub input_board
     $self->{'goal_y'} = $goal_y;
     $self->{'board'} = \@board;
     $self->{'plank_lens'} = [ map { $_->{'len'} } @planks ];
-    
+
     my $state = [ 0,  (map { ($_->{'start'}->{'x'}, $_->{'start'}->{'y'}, (($_->{'dir'} eq "E") ? 0 : 1)) } @planks) ];
     $self->process_plank_data($state);
 
@@ -169,20 +169,20 @@ sub process_plank_data
 
     my $active = $state->[0];
 
-    my @planks = 
-        (map 
-            { 
-                { 
-                    'len' => $self->{'plank_lens'}->[$_], 
-                    'x' => $state->[$_*3+1], 
-                    'y' => $state->[$_*3+1+1], 
+    my @planks =
+        (map
+            {
+                {
+                    'len' => $self->{'plank_lens'}->[$_],
+                    'x' => $state->[$_*3+1],
+                    'y' => $state->[$_*3+1+1],
                     'dir' => $state->[$_*3+2+1],
                     'active' => 0,
-                } 
-            } 
+                }
+            }
             (0 .. (scalar(@{$self->{'plank_lens'}}) - 1))
         );
-   
+
     foreach my $p (@planks)
     {
         $p->{'end_x'} = $p->{'x'} + (! ($p->{'dir'}) ? $p->{'len'} : 0);
@@ -270,8 +270,8 @@ sub check_if_final_state
     my $goal_x = $self->{'goal_x'};
     my $goal_y = $self->{'goal_y'};
 
-    return grep { (($_->{'x'} == $goal_x) && ($_->{'y'} == $goal_y)) || 
-                  (($_->{'end_x'} == $goal_x) && ($_->{'end_y'} == $goal_y)) 
+    return grep { (($_->{'x'} == $goal_x) && ($_->{'y'} == $goal_y)) ||
+                  (($_->{'end_x'} == $goal_x) && ($_->{'end_y'} == $goal_y))
                 }
-                @$plank_data;                
+                @$plank_data;
 }

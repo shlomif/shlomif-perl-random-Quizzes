@@ -14,7 +14,7 @@ sub m2
         my $pair = shift;
         return +(ref($pair) eq "ARRAY") ? $pair->[0] : 1;
     };
-    
+
     my $helper;
 
     $helper = sub {
@@ -26,7 +26,7 @@ sub m2
         }
         elsif ($mycount == 0)
         {
-            return $helper->($myrest_idx+1, 
+            return $helper->($myrest_idx+1,
                 $get_item->($mylist->[$myrest_idx]),
                 $get_count->($mylist->[$myrest_idx])
             );

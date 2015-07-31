@@ -5,7 +5,7 @@ use strict;
 sub get_factors
 {
     my $n = shift;
-    
+
     my (@factors);
     my $exp;
     for(my $p=2;$n > 1;$p++)
@@ -35,11 +35,11 @@ $numbers[2]->{'v'} = 2;
 foreach $max_n (3 .. 1000)
 {
     my $factors = get_factors($max_n);
-    $numbers[$max_n] = 
+    $numbers[$max_n] =
         {
             'factors' => $factors,
         };
-        
+
     if (@$factors == 1)
     {
         next;
@@ -68,7 +68,7 @@ foreach $max_n (3 .. 1000)
     if (@coeffs == 1)
     {
         my $c = 2;
-        
+
     }
 }
 

@@ -8,7 +8,7 @@ use vars qw(@ISA);
 
 @ISA=qw(Shlomif::LMSolver::Base);
 
-my %cell_dirs = 
+my %cell_dirs =
     (
         'N' => [0,-1],
         'S' => [0,1],
@@ -22,7 +22,7 @@ sub input_board
 
     my $filename = shift;
 
-    my $spec = 
+    my $spec =
     {
         'dims' => {'type' => "xy(integer)", 'required' => 1},
         'start' => {'type' => "xy(integer)", 'required' => 1},
@@ -30,11 +30,11 @@ sub input_board
     };
 
     my $input_obj = Shlomif::LMSolver::Input->new();
-    my $input_fields = $input_obj->input_board($filename, $spec); 
+    my $input_fields = $input_obj->input_board($filename, $spec);
     my ($width, $height) = @{$input_fields->{'dims'}->{'value'}}{'x','y'};
     my ($start_x, $start_y) = @{$input_fields->{'start'}->{'value'}}{'x','y'};
     my (@board);
-    
+
     my $line;
     my $line_number=0;
     my $lines_ref = $input_fields->{'layout'}->{'value'};
@@ -51,8 +51,8 @@ sub input_board
 
     my $gen_exception = sub {
         my $text = shift;
-        die "$text on $filename at line " . 
-            ($input_fields->{'layout'}->{'line_num'} + $line_number + 1) . 
+        die "$text on $filename at line " .
+            ($input_fields->{'layout'}->{'line_num'} + $line_number + 1) .
             "!\n";
     };
 
@@ -102,7 +102,7 @@ sub pack_state
     return pack("cc", @{$state_vector});
 }
 
-# A function that accepts an atom that represents a state 
+# A function that accepts an atom that represents a state
 # and returns an array ref that represents it.
 sub unpack_state
 {
@@ -111,7 +111,7 @@ sub unpack_state
     return [ unpack("cc", $state) ];
 }
 
-# Accept an atom that represents a state and output a 
+# Accept an atom that represents a state and output a
 # user-readable string that describes it.
 sub display_state
 {
@@ -138,7 +138,7 @@ sub check_if_final_state
 }
 
 # This function enumerates the moves accessible to the state.
-# If it returns a move, it still does not mean that it is a valid 
+# If it returns a move, it still does not mean that it is a valid
 # one. I.e: it is possible that it is illegal to perform it.
 sub enumerate_moves
 {
@@ -152,7 +152,7 @@ sub enumerate_moves
     my $step = $self->{'board'}->[$y][$x];
 
     my @moves;
-    
+
     if ($x + $step < $self->{'width'})
     {
         push @moves, "E";
@@ -173,8 +173,8 @@ sub enumerate_moves
     {
         push @moves, "N";
     }
-    
-    return @moves;   
+
+    return @moves;
 }
 
 # This function accepts a state and a move. It tries to perform the

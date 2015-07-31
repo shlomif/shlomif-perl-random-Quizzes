@@ -15,7 +15,7 @@ open(STDOUT, ">&SAVEOUT");
 close(ALTOUT);
 my $printed = join("", <ALTOUT_READ>);
 # TEST
-is($printed, "Invoked from command-line\n", 
+is($printed, "Invoked from command-line\n",
     "Testing for command-line behavior.");
 
 # Just to settle -w

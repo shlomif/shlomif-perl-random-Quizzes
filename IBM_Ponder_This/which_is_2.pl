@@ -45,7 +45,7 @@ while (1)
     $first_time = 0;
     # print join("-",@value_mods_proto), "\n";
     my @vecs = map { my $i = $_; [ map { $tags[$i][$_] * $value_mods[$i][$_] } (0 .. 1)] } (0 .. ($num_vecs-1));
-    
+
     my @coeffs = (0,0,0,0);
     while(1)
     {
@@ -59,7 +59,7 @@ while (1)
             else
             {
                 $coeffs[$i] = 0;
-            }            
+            }
         }
         if ($i == $num_vecs)
         {

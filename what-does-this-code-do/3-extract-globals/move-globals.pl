@@ -23,7 +23,7 @@ foreach my $file (keys(%lines_to_extract))
     open O, ">$file.new";
     while (<I>)
     {
-        if (($extracted_line_idx < @$lines) && 
+        if (($extracted_line_idx < @$lines) &&
             ($line_num == $lines->[$extracted_line_idx]->{l})
            )
         {

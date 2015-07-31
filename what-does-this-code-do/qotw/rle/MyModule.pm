@@ -14,7 +14,7 @@ sub m2
         my $e = shift;
         return +(ref($e) eq "ARRAY") ? $e->[0] : 1;
     };
-    
+
     my $g;
 
     $g = sub {
@@ -26,7 +26,7 @@ sub m2
         }
         elsif ($j == 0)
         {
-            return $g->($h+1, 
+            return $g->($h+1,
                 $d->($c->[$h]),
                 $f->($c->[$h])
             );

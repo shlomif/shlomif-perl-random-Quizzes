@@ -7,8 +7,8 @@ my @funcs = (qw(foo bar baz));
 for my $bit_mask (0 .. (2**@funcs-1))
 {
     my @bits = map { (($bit_mask >> $_) & 0x1) } (0 .. $#funcs);
-    my $filename = 
-        sprintf("%.2i", $bit_mask) . 
+    my $filename =
+        sprintf("%.2i", $bit_mask) .
             join("-", map { ($bits[$_] ? "" : "no") . $funcs[$_] } (0 .. $#funcs));
     my $num_tests = 0;
     foreach(@bits)
@@ -29,15 +29,15 @@ EOF
 
     if ($bit_mask)
     {
-        print O "use Optional::Exports qw(" . 
-            join(" ", map { $bits[$_] ? ($funcs[$_]) : () } (0 .. $#funcs)). 
+        print O "use Optional::Exports qw(" .
+            join(" ", map { $bits[$_] ? ($funcs[$_]) : () } (0 .. $#funcs)).
                 ");" . "\n";
     }
     else
     {
         print O "use Optional::Exports;\n";
     }
-    
+
     for my $f_idx (0 .. $#funcs)
     {
         my $func_name = $funcs[$f_idx];

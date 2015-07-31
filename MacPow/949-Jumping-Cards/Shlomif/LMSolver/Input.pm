@@ -55,9 +55,9 @@ sub input_board
         return 1;
     };
 
-    my $filename_str = 
-        ($filename eq "-") ? 
-            "standard input" : 
+    my $filename_str =
+        ($filename eq "-") ?
+            "standard input" :
             "\"$filename\"";
 
     my $gen_exception = sub {
@@ -82,8 +82,8 @@ sub input_board
             # Save the line number for safekeeping because a layout or
             # other multi-line value can increase it.
             my $key_line_num = $line_num;
-            
-            
+
+
 
             if (! exists ($spec->{$key}))
             {
@@ -121,9 +121,9 @@ sub input_board
             }
             elsif ($type eq "array(xy(integer))")
             {
-                
+
                 if ($line =~ /^\[\s*$xy_pair(\s*\,\s*$xy_pair)*\s*\]\s*$/)
-                {                    
+                {
                     my @elements = ($line =~ m/$xy_pair/g);
                     my @pairs;
                     while (scalar(@elements))
@@ -150,9 +150,9 @@ sub input_board
                     {
                         my ($sx,$sy,$ex,$ey) = @elements[0 .. 3];
                         @elements = @elements[4 .. $#elements];
-                        push @pairs, 
-                            { 
-                                'start' => { 'x'=>$sx , 'y'=>$sy }, 
+                        push @pairs,
+                            {
+                                'start' => { 'x'=>$sx , 'y'=>$sy },
                                 'end' => { 'x' => $ex, 'y' => $ey }
                             };
                     }
@@ -160,7 +160,7 @@ sub input_board
                 }
                 else
                 {
-                    $gen_exception->("Key \"$key\" expects an array of integral (sx,sy) -> (ex,ey) start/end x,y pairs as a value");                    
+                    $gen_exception->("Key \"$key\" expects an array of integral (sx,sy) -> (ex,ey) start/end x,y pairs as a value");
                 }
             }
             elsif ($type eq "layout")
@@ -211,7 +211,7 @@ sub input_board
             }
         }
     }
-    
+
     return $ret;
 }
 
@@ -224,7 +224,7 @@ sub input_horiz_vert_walls_layout
     my $lines_ptr = shift;
 
     my (@vert_walls, @horiz_walls);
-    
+
     my $line;
     my $line_num = 0;
     my $y;
@@ -240,7 +240,7 @@ sub input_horiz_vert_walls_layout
         my $msg = shift;
         die ($msg . " at line " . ($line_num+$lines_ptr->{'line_num'}+1));
     };
-    
+
 
     my $input_horiz_wall = sub {
         $line = $get_next_line->();
@@ -267,7 +267,7 @@ sub input_horiz_vert_walls_layout
         }
         push @vert_walls, [ (map { $_ eq "|" } split(//, $line)) ];
     };
-    
+
 
 
     for($y=0;$y<$height;$y++)
@@ -275,7 +275,7 @@ sub input_horiz_vert_walls_layout
         $input_horiz_wall->();
         $input_vert_wall->();
     }
-    $input_horiz_wall->();    
+    $input_horiz_wall->();
 
     return (\@horiz_walls, \@vert_walls);
 }

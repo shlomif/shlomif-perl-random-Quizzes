@@ -61,9 +61,9 @@ sub enum_squares
             # Check to see if this is a valid solution.
             my @table = (map { my @v = @{$six_bit_sigs[$_->[1]][1]}; [ $_->[0] ? reverse(@v) : @v ] } @$prevs);
             my @columns =
-                (map 
-                    { 
-                        my $n = $_; 
+                (map
+                    {
+                        my $n = $_;
                         [map { $table[$_][$n] } (0 .. 5) ];
                     }
                     (0 .. 5)
@@ -91,7 +91,7 @@ sub enum_squares
                 print "New Perm: (" . join(",", map{$_->[1]}@$prevs). ")\n";
                 for my $vec (@$prevs)
                 {
-                    my @v = @{$six_bit_sigs[$vec->[1]][1]}; 
+                    my @v = @{$six_bit_sigs[$vec->[1]][1]};
                     if ($vec->[0])
                     {
                         @v = reverse(@v);
@@ -119,10 +119,10 @@ sub enum_squares
             }
         }
     };
-    
+
     $recurser->([], [(0) x 36]);
 
-    
+
 }
 
 1;

@@ -25,6 +25,6 @@ sub display_state
     my $string;
     for my $i (0 .. $#$plank_lens)
     {
-        
+
     }
 }
